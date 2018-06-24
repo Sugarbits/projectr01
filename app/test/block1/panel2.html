@@ -1,0 +1,119 @@
+<head>
+<style>
+body {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+}
+
+form {
+    position: absolute;
+}
+
+#cube-container {
+    position: relative;
+    top: 200px;
+    perspective: 800px;
+    -webkit-perspective: 800px;
+    perspective-origin: 50% 50%;
+    -webkit-perspective-origin: 50% 50%;
+}
+
+#cube {
+    position: relative;
+    margin: 0 auto;
+    height: 100px;
+    width: 100px;
+    transform-style: preserve-3d;
+}
+
+.face {
+    position: absolute;
+    height: 360px;
+    width: 360px;
+    padding: 20px;
+    opacity: .5;
+    -webkit-border: solid 4px white;
+}
+    
+#cube .one  {
+  -webkit-transform: rotateX(90deg) translateZ(200px);
+    background: blue;
+}
+
+#cube .two {
+  -webkit-transform: translateZ(200px);
+    background: red;
+}
+
+#cube .three {
+  -webkit-transform: rotateY(90deg) translateZ(200px);
+    background: green;
+}
+
+#cube .four {
+  -webkit-transform: rotateY(180deg) translateZ(200px);
+    background: black;
+}
+
+#cube .five {
+  -webkit-transform: rotateY(-90deg) translateZ(200px);
+    background: orange;
+}
+
+#cube .six {
+  -webkit-transform: rotateX(-90deg) translateZ(200px) rotate(180deg);
+    background: purple;
+}
+</style>
+</head>
+<form>
+    <input type = "button" value ="-50deg" id="button-one"/>
+    <input type = "button" value ="+50deg" id="button-two"/>    
+</form>
+    
+<div id="cube-container">
+  <div id="cube">
+    <div class="face one">
+      One
+    </div>
+    <div class="face two">
+        two
+    </div>
+    <div class="face three">
+      three
+    </div>
+    <div class="face four">
+      four
+    </div>
+    <div class="face five">
+      five
+    </div>
+    <div class="face six">
+      More content
+    </div>
+  </div>
+</div>
+<script>
+//code to rotate cube
+    var rotateCube = document.getElementById('cube'),
+        cubeRotation = 0;
+    
+    var moveLeft = document.getElementById('button-one');
+    var moveRight = document.getElementById('button-two');
+    
+    
+    
+    var rotationValue = 0;
+
+    moveLeft.onclick = function() {
+        rotationValue -= 5;
+        rotateCube.style.webkitTransform = "rotateY("+ rotationValue +"deg)";
+    }
+    moveRight.onclick = function() {
+        rotationValue += 5;
+        rotateCube.style.webkitTransform = "rotateY("+ rotationValue +"deg)";
+    }
+    
+    
+</script>

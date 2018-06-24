@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/segment7" type="text/css"/>
+<!--
+ref: https://fontlibrary.org/en/font/segment7
+<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/segment7" type="text/css"/>
+font-family: 'Segment7Standard'; 
+font-weight: normal; 
+font-style: italic; 
+-->
+<link href="https://fonts.googleapis.com/css?family=Anton|Bangers|Bevan|Plaster" rel="stylesheet">
+<!--
+ref: https://fonts.google.com/?selection.famil
+<link href="https://fonts.googleapis.com/css?family=Anton|Bangers|Bevan|Plaster" rel="stylesheet">
+font-family: 'Anton', sans-serif;
+font-family: 'Plaster', cursive;
+font-family: 'Bangers', cursive;
+font-family: 'Bevan', cursive;
+-->
+
+<!--
+google 中文字體
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+font-family: ‘cwTeXYen’, sans-serif;
+-->
+<style>
+.button_contain{
+	position:absolute;
+	top:75%;
+	left:75%;
+}
+.button {
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+	<style>
+	@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+	.icon{
+		position: absolute;
+		width:80%;
+		top:-15%;
+		left:15%;
+	}
+	.info{
+		position: absolute;
+		bottom:0%;
+		right:0.5%;
+		color:white;
+		font-size:40px;
+	}
+	.info_ver{
+		font-size:20px;
+	}
+	.slider{
+		position: absolute;
+		top:15%;
+		left:15%;
+	}
+	.slider iframe{
+		position: absolute;
+		width: 100vw;
+		height: 100vh;
+	}
+	body{
+		padding:0px;
+		margin:0px;
+		background-color:white;
+		overflow:hidden;
+	}
+    </style>
+	<style>
+	.video-wrapper{
+		position: relative;
+		padding-bottom: 56.25%; /* 16:9 */ 
+		padding-top: 25px;
+	}
+	.video-wrapper iframe{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+	}
+    </style>
+    <style>
+	.design_box-1, .design_box-2, .design_box-3{
+		padding:0px;
+		width:15%;
+		margin-bottom:10px;
+		text-align:center;
+	}
+	.design_box-1{ 
+		background:transparent;  
+		opacity:1;
+	}
+
+	.design_box-1 p, .box-2 p, .box-3 p{
+		color:#fff;
+		text-align:center;
+		font-size:240px;
+	}
+	.font0{
+		font-family: 'Arial';
+	}
+	.font1{
+		font-family: 'Segment7Standard';
+		font-weight: normal;
+		font-style: italic;
+	}
+	.font2{
+		font-family: ‘cwTeXYen’, sans-serif;
+		font-weight: bolder;
+	}
+	.design_box-2{
+		background:rgba(0,0,0,0.6);
+		margin-bottom:10px;
+	}
+	.design_box-3{
+		background:#000;
+		filter:Alpha(opacity=0);
+	}
+    </style>
+</head>
+	<div class='video-wrapper'>
+		<!--A7ZkZazfvao--><iframe src="LoopPlayer.php?video_url=S3uU8VDlhyU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+	</div>
+	<div class='slider'>
+		<iframe src="VerticleWordSlider.php?test" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+	</div>
+	
+	<!--
+	ref: https://www.webdesigns.com.tw/CSS-opacity.asp
+	<div class="design_box-3">
+	<p>IE 6 7 8 專屬</p>
+	<div>
+	-->
+	<!--圖片透明文字透明-->
+	<!--
+	<div class="design_box-1  clock">
+	<p id='time'>時間顯示此處</p>
+	</div>
+	-->
+	<img class='icon' src="studioR.png" alt="Mountain View">
+	<div class='button_contain'><button onclick='location.replace("plugin/CreativeButtons/link.php")' class="button"><span>Come in!</span></button></div>
+	<span class='info'><span class='font2'></span><span class='font0 info_ver'>powered by studioR</span>
+</html>
+<script>
+window.addEventListener("load", function(event) {
+    console.log("All resources finished loading!");
+	//startTime();
+
+  });
+function startTime() {
+    var today = new Date();
+	var fy = today.getFullYear();//西元年
+	var mon = today.getMonth();//月份
+	var d = today.getDate();//日期
+	var w = today.getDay();//星期
+	//
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+	//
+	var ms = today.getMilliseconds();//毫秒
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('time').innerHTML ="<span class='font1'>"+ h + "</span><span class='font0'>:</span><span class='font1'>" + m + "</span><span class='font0'>:</span><span class='font1'>" + s + "</span>";
+	//document.getElementById('time').innerHTML = fy+ "/" + mon + "/"+ d + " " +h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+</script>

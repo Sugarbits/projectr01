@@ -1,0 +1,2 @@
+CesiumJS 1.46 2018-06-01
+https://github.com/AnalyticalGraphicsInc/cesium/releases/download/1.46/Cesium-1.46.zip
