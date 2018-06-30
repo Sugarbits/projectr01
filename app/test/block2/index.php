@@ -7,13 +7,18 @@
     <meta name="description" content="Create 3D models using glTF.">
     <meta name="cesium-sandcastle-labels" content="Tutorials,Showcases">
     <title>Cesium Demo</title>
-	<script src="../../plugin/jquery-3.3.1.min.js"></script>
 	<!--jquery-->
+	<script src="../../plugin/jquery-3.3.1.min.js"></script>
+	<!--jquery end-->
 	<!--for cesium -->
-<script src="../../../core/stable-plugin/Cesium-1.46/Build/Cesium/Cesium.js"></script>
+	<script src="../../../core/stable-plugin/Cesium-1.46/Build/Cesium/Cesium.js"></script>
     <script type="text/javascript" src="../../../core/stable-plugin/Cesium-1.46/Apps/Sandcastle/Sandcastle-header.js"></script>
     <script type="text/javascript" src="../../../core/stable-plugin/Cesium-1.46/ThirdParty/requirejs-2.1.20/require.js"></script>
-
+	<script type="text/javascript" src="parm_dealer.js"></script>
+	<script type="text/javascript" src="parm_dealer.js"></script>
+	<script type="text/javascript" src="scene_dealer.js"></script>
+	<script type="text/javascript" src="jwt_sha256.js"></script>
+	<!--for cesium end-->
     <script type="text/javascript">
         if(typeof require === "function") {
             require.config({
@@ -31,6 +36,9 @@
 <div id="cesiumContainer" class="fullSize"></div>
 <div id="loadingOverlay"><h1>Loading...</h1></div>
 <div id="toolbar"></div>
+<iframe style='overflow: visible;left:1px; width: 470px; height: 270px; display: block; position: absolute; visibility: visible; z-index: 1; top: -0.5em; right: -0.5em;' scrolling="no" src="panel.php"  frameBorder="0">
+	<p>Your browser does not support iframes.</p>
+</iframe>
 <!--<video id="trailer" style="display: none;" autoplay="" loop="" crossorigin="" controls="">
     <source src="../../../data/block2_test/video/SampleVideo_1280x720_2mb.mp4" type="video/mp4">
     Your browser does not support the <code>video</code> element.
@@ -38,6 +46,10 @@
 
 <style>
 #toolbar{
+	//position:absolute;
+	top:0px;
+}
+#div{
 	//position:absolute;
 	top:0px;
 }
@@ -57,6 +69,7 @@ var sys={
 	cmFunc:{},
 	func:{_1:null},
 	enable:[false],
+	SceneVal:null,
 	camera:null
 };
 function startup(Cesium) {
@@ -93,9 +106,18 @@ var viewer = new Cesium.Viewer('cesiumContainer', {
 });
 viewer._cesiumWidget._creditContainer.style.display="none";
 var scene = viewer.scene;
+var camera = viewer.camera;
+//self-defined
 
 // Get a reference to the ellipsoid, with terrain on it.  (This API may change soon)
 var ellipsoid = viewer.scene.globe.ellipsoid;
+
+$(document).ready(function(){
+   //HandlerDealer.initialize(Cesium,viewer,scene);
+   CameraDealer.initialize(Cesium,viewer,scene,camera);
+   ParmDealer.initialize(viewer,Cesium.Cartesian3);
+   $('#loadingOverlay').hide();
+});
 
 var entity_label = viewer.entities.add({
     label : {
@@ -238,11 +260,10 @@ var videoElement = document.getElementById('trailer');
     }
 	});
 */ 
-var text_arr = ['天蠍座','白羊座','','',''];
-var height_arr = [1,1,1,1,1];
-var scale_arr = [180,480,1,1,1];
-var lat_arr = [5,5.5,25,35,35];
-var lon_arr = [9,5,6,7,9];
+var height_arr = [1,1,1,1,1,1,1,1,1,1,1,1];
+var scale_arr = [180,480,200,240,280,320,360,400,440,480,460,430];
+var lat_arr = [5,5.5,5.5,5,6,4,3,4,5,3,3.5,4.5];
+var lon_arr = [9,5,6,7,9,5,9,4.5,6,9,8,9];
 var lat_orgin = 25.150543;
 //var lat_orgin = 25.1499496;
 var lon_orgin = 121.777984;
@@ -254,9 +275,12 @@ var lon_muti = 0.8;
 //var modelURI_arr = ['../../../data/block2_test/models/NTOU/sagittarius.glb'];
 //var modelURI_arr = ['../../../data/block2_test/models/NTOU/virgo.glb'];
 //var modelURI_arr = ['../../../data/block2_test/models/NTOU/Leo.gltf'];
-var modelURI_arr = ['../../../data/block2_test/models/NTOU/Cancer.glb','../../../data/block2_test/models/NTOU/Aries.glb'];
+//ref: http://wywu.pixnet.net/blog/post/24073717-%E5%8D%81%E4%BA%8C%E6%98%9F%E5%BA%A7%E4%B8%AD%E8%8B%B1%E6%96%87%E5%90%8D%E7%A8%B1
+var modelURI_NTOU_public = ['../../../data/block2_test/models/NTOU/','.glb'];
+var modelURI_arr = ['Aries','Taurus','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+var modelText_arr = ['牡羊座','金牛座','雙子座','巨蟹座','獅子座','處女座','天秤座','天蠍座','射手座','魔羯座','水瓶座','雙魚座'];
 
-for (i = 0; i < 2; ++i) {
+for (i = 0; i < 12; ++i) {
 	var star2_pos = new Cesium.Cartesian3.fromDegrees((lon_arr[i]*lon_muti)+lon_orgin, (lat_arr[i]*lat_muti)+lat_orgin,height_basic+height_arr[i]*height_muti);
 	var heading = Cesium.Math.toRadians(180);
     var pitch = 0;
@@ -275,11 +299,11 @@ for (i = 0; i < 2; ++i) {
     position :star2_pos,
 	orientation:orientation,
 	model : {
-        uri : modelURI_arr[i],
+        uri : modelURI_NTOU_public[0]+modelURI_arr[i]+modelURI_NTOU_public[1],
         minimumPixelSize : scale_arr[i]
     },
 	label : {
-		text : text_arr[i],
+		text : modelText_arr[i],
         show : true,
         showBackground : false,
 		fillColor : Cesium.Color.SKYBLUE,
@@ -349,7 +373,8 @@ viewer.trackedEntity = box;
 
 ///camera 設定
 // Set initial camera position and orientation to be when in the model's reference frame.
-var camera = viewer.camera;
+
+
 viewer.camera.setView({
     destination : Cesium.Cartesian3.fromDegrees(121.777984, 25.150543, 50.0),
     orientation : {
@@ -362,6 +387,12 @@ viewer.camera.setView({
 var modelURI_NTOU = '../../../data/block2_test/models/NTOU/NTOUS.gltf';
 var position_NTOU = Cesium.Cartesian3.fromDegrees(121.777728, 25.149260, 50.0);
 add_model(modelURI_NTOU , position_NTOU,'延平大樓');
+var modelURI_NTOU_area1 = '../../../data/block2_test/models/NTOU2/ntou_area 1.gltf';
+var modelURI_NTOU_area2 = '../../../data/block2_test/models/NTOU2/ntou_area 2.gltf';
+var position_NTOU_area1 = Cesium.Cartesian3.fromDegrees(121.7783134, 25.1497053, 25.0);
+var position_NTOU_area2 = Cesium.Cartesian3.fromDegrees(121.7739099, 25.1493831, 25.0);
+add_model(modelURI_NTOU_area1 , position_NTOU_area1,'');
+add_model(modelURI_NTOU_area2 , position_NTOU_area2,'');
 ///camera 設定 end
 
 /*
@@ -479,6 +510,22 @@ var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
         }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 */
+
+function computeCirclularFlight(lon, lat, radius) {
+    var property = new Cesium.SampledPositionProperty();
+    var startAngle = Cesium.Math.nextRandomNumber() * 360.0;
+    var endAngle = startAngle + 360.0;
+
+    var increment = (Cesium.Math.nextRandomNumber() * 2.0 - 1.0) * 10.0 + 45.0;
+    for (var i = startAngle; i < endAngle; i += increment) {
+        var radians = Cesium.Math.toRadians(i);
+        var timeIncrement = i - startAngle;
+        var time = Cesium.JulianDate.addSeconds(start, timeIncrement, new Cesium.JulianDate());
+        var position = Cesium.Cartesian3.fromDegrees(lon + (radius * 1.5 * Math.cos(radians)), lat + (radius * Math.sin(radians)), Cesium.Math.nextRandomNumber() * 500 + 1750);
+        property.addSample(time, position);
+    }
+    return property;
+}
 var numBalloons = 12;
 for (var i = 0; i < numBalloons; ++i) {
     var balloonRadius = (Cesium.Math.nextRandomNumber() * 2.0 - 1.0) * 0.01 + radius;
@@ -500,18 +547,33 @@ for (var i = 0; i < numBalloons; ++i) {
     });
 	
 }
-sys.func._1 = function (){
-	var camera = viewer.camera;
-    console.log(viewer.camera.positionWC.clone());
-    console.log(viewer.camera.up.clone());
-    console.log(viewer.camera.direction.clone());
-}
+
 sys.camera = viewer.camera;
 
-//self-defined
-$(document).ready(function(){
-	$('#loadingOverlay').hide();
-});
+/*
+scene_dealer.js
+*/
+
+sys.func._1 = function (){
+   /*SceneDealer.setViewer(viewer);
+   sys.SceneVal = SceneDealer.getSceneVal(Cesium.SceneMode);
+   console.log(jwt_sha256.encode(sys.SceneVal));
+   console.log(SceneDealer.getScenePic());
+   return jwt_sha256.encode(sys.SceneVal);*/
+   //console.log(ParmDealer.getSceneVal(Cesium.SceneMode));
+   return (ParmDealer.getSceneVal(Cesium.SceneMode));
+}
+sys.func._2 = function (){
+   /*SceneDealer.getSceneVal(Cesium.SceneMode);
+   var data = jwt_sha256.decode(sys.SceneVal);
+   SceneDealer.setViewer(viewer);
+   SceneDealer.setSceneVal(data);*/
+   ParmDealer.setSceneVal(sys.SceneVal);
+}
+sys.func._3 = function (){
+   CameraDealer.autoplay(121.777728, 25.149260);
+}
+
 //self-defined end
 //Sandcastle_End
     Sandcastle.finishedLoading();
@@ -523,8 +585,16 @@ if (typeof Cesium !== "undefined") {
     require(["Cesium"], startup);
 }
 //parent's function call here
-function snap_sence(){
-	sys.func._1();
+function camera_autoplay(){
+	sys.func._3();
+}
+function save_sence(){
+	return sys.func._1();
+	//sys.func._1();
+}
+function load_sence(data){
+	sys.SceneVal = data;
+	sys.func._2();
 }
 </script>
 </body>

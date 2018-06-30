@@ -54,7 +54,7 @@ canvas {
 </style>
 <script id="cesium_sandcastle_script">
 var sys={
-	cmFunc:{}
+	Func:{_1:null}
 };
 function startup(Cesium) {
     'use strict';
@@ -110,15 +110,25 @@ var camera = viewer.camera;
 
 // configure settings
 var targetResolutionScale = 1.0; // for screenshots with higher resolution set to 2.0 or even 3.0
-var timeout = 10000; // in ms
+var timeout = 1000; // in ms
   
 var scene = viewer.scene;
 if (!scene) {
     console.error("No scene");
 }
 
+
+//scene.preRender.addEventListener(prepareScreenshot);
+//
+sys.Func._1 = function(){
+	console.log('_1 inner [func]');
+   //scene.preRender.addEventListener(prepareScreenshot);
+   prepareScreenshot();
+   
+}
 // define callback functions
 var prepareScreenshot = function(){
+	console.log('prepareScreenshot');
     var canvas = scene.canvas;    
     viewer.resolutionScale = targetResolutionScale;
     scene.preRender.removeEventListener(prepareScreenshot);
@@ -128,7 +138,8 @@ var prepareScreenshot = function(){
     }, timeout);
 }
 
-var takeScreenshot = function(){    
+var takeScreenshot = function(){
+	console.log('takeScreenshot');
     scene.postRender.removeEventListener(takeScreenshot);
     var canvas = scene.canvas;
     canvas.toBlob(function(blob){
@@ -139,7 +150,7 @@ var takeScreenshot = function(){
     });
 }
 
-scene.preRender.addEventListener(prepareScreenshot);
+
 
 function downloadURI(uri, name) {
     var link = document.createElement("a");
@@ -195,7 +206,10 @@ if (typeof Cesium !== "undefined") {
     require(["Cesium"], startup);
 }
 //parent's function call here
-
+function tp(){
+	sys.Func._1();
+	console.log('_1');
+}
 </script>
 </body>
 </html>
